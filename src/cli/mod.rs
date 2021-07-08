@@ -18,6 +18,7 @@ use pop_upgrade::{
         systemd::{self, LoaderEntry},
         RefreshOp, UpgradeEvent, UpgradeMethod,
     },
+    sighandler,
 };
 use std::{
     convert::TryFrom,
@@ -122,6 +123,7 @@ impl Client {
                     let upgrade_panel =
                         if &*current == "18.04" { "info-overview" } else { "upgrade" };
 
+                    sighandler::uninit(); // Allow process to be killed while waiting on notification
                     notify(&summary, &body, || {
                         let _ =
                             exec::Command::new("gnome-control-center").arg(upgrade_panel).exec();

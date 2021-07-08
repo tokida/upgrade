@@ -58,3 +58,12 @@ pub fn init() {
         let _ = libc::signal(libc::SIGTERM, handler);
     }
 }
+
+pub fn uninit() {
+    unsafe {
+        let _ = libc::signal(libc::SIGHUP, libc::SIG_DFL);
+        let _ = libc::signal(libc::SIGTSTP, libc::SIG_DFL);
+        let _ = libc::signal(libc::SIGINT, libc::SIG_DFL);
+        let _ = libc::signal(libc::SIGTERM, libc::SIG_DFL);
+    }
+}
